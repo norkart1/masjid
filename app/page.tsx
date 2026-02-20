@@ -49,151 +49,114 @@ export default function Home() {
   }, [fetchMosques]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="min-h-screen bg-[#F8F9FE]">
       {/* Header */}
-      <header className="border-b border-slate-700 bg-slate-800/50 backdrop-blur-sm sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4">
+      <header className="bg-transparent sticky top-0 z-40">
+        <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center">
-                <MapPin className="w-5 h-5 text-white" />
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 flex items-center justify-center">
+                <img src="/logo.jpg" alt="Masjid Finder" className="w-full h-full object-contain" />
               </div>
-              <div>
-                <h1 className="text-2xl font-bold text-white">Masjid Finder</h1>
-                <p className="text-xs text-slate-400">Find mosques near you</p>
+              <div className="flex flex-col">
+                <h1 className="text-3xl font-bold text-[#4B3F72]">Welcome, User</h1>
+                <p className="text-sm text-gray-500">{new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
               </div>
             </div>
-            <Button
-              onClick={() => (window.location.href = '/auth/login')}
-              variant="outline"
-              className="border-slate-600 text-slate-300 hover:text-white hover:bg-slate-700"
-            >
-              <Lock className="w-4 h-4 mr-2" />
-              Admin
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                onClick={() => (window.location.href = '/auth/login')}
+                variant="ghost"
+                className="text-[#4B3F72] hover:bg-purple-100"
+              >
+                <Lock className="w-5 h-5" />
+              </Button>
+            </div>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-screen lg:h-[600px]">
-          {/* Left Sidebar - Search & List */}
-          <div className="lg:col-span-1 flex flex-col gap-4 overflow-hidden">
-            {/* Search Box */}
-            <Card className="border-slate-700 bg-slate-800 p-4">
-              <div className="space-y-3">
-                <div>
-                  <label className="block text-sm font-medium text-slate-200 mb-2">
-                    Search by City
-                  </label>
-                  <div className="flex gap-2">
-                    <Input
-                      type="text"
-                      value={searchCity}
-                      onChange={(e) => setSearchCity(e.target.value)}
-                      placeholder="Enter city name..."
-                      className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-500"
-                    />
-                    <Button
-                      onClick={() => fetchMosques()}
-                      className="bg-emerald-600 hover:bg-emerald-700 text-white px-3"
-                    >
-                      <Search className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </div>
-                <div className="text-sm text-slate-400">
-                  {isLoading ? 'Loading...' : `Found ${mosques.length} mosque${mosques.length !== 1 ? 's' : ''}`}
-                </div>
-              </div>
-            </Card>
+      <div className="container mx-auto px-4 py-4">
+        <div className="relative mb-8">
+          <Input
+            type="text"
+            value={searchCity}
+            onChange={(e) => setSearchCity(e.target.value)}
+            placeholder="Find Nearest Masjid..."
+            className="w-full h-14 pl-12 pr-4 rounded-2xl bg-white border-none shadow-sm text-gray-600 placeholder:text-gray-400 focus-visible:ring-purple-200"
+          />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-white shadow-sm rounded-lg flex items-center justify-center">
+             <MapPin className="w-5 h-5 text-[#4B3F72]" />
+          </div>
+        </div>
 
-            {/* Mosques List */}
-            <div className="flex-1 overflow-y-auto">
-              <div className="space-y-2 pr-2">
-                {isLoading ? (
-                  <div className="text-center py-8">
-                    <p className="text-slate-400">Loading mosques...</p>
-                  </div>
-                ) : mosques.length === 0 ? (
-                  <div className="text-center py-8">
-                    <MapPin className="w-8 h-8 text-slate-600 mx-auto mb-2" />
-                    <p className="text-slate-400 text-sm">No mosques found</p>
-                  </div>
-                ) : (
-                  mosques.map((mosque) => (
-                    <Card
-                      key={mosque.id}
-                      onClick={() => setSelectedMosque(mosque)}
-                      className={`border cursor-pointer transition-all p-3 ${
-                        selectedMosque?.id === mosque.id
-                          ? 'border-emerald-500 bg-emerald-500/10'
-                          : 'border-slate-700 bg-slate-800 hover:border-slate-600'
-                      }`}
-                    >
-                      <h3 className="font-semibold text-white text-sm mb-1">{mosque.name}</h3>
-                      <p className="text-xs text-slate-400 mb-2">{mosque.address}</p>
-                      {mosque.city && (
-                        <p className="text-xs text-slate-500">{mosque.city}</p>
-                      )}
-                      {mosque.phone && (
-                        <p className="text-xs text-emerald-400 mt-2">
-                          <Phone className="w-3 h-3 inline mr-1" />
-                          {mosque.phone}
-                        </p>
-                      )}
-                    </Card>
-                  ))
-                )}
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-lg font-bold text-[#4B3F72]">{mosques.length} Nearest Mosques</h2>
+          <div className="w-8 h-8 flex items-center justify-center bg-white rounded-lg shadow-sm">
+             <Search className="w-4 h-4 text-gray-400" />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Mosques List */}
+          <div className="space-y-4">
+            {isLoading ? (
+              <div className="text-center py-12">
+                <p className="text-gray-400">Searching...</p>
               </div>
-            </div>
+            ) : mosques.length === 0 ? (
+              <div className="text-center py-12 bg-white rounded-3xl shadow-sm">
+                <MapPin className="w-12 h-12 text-gray-200 mx-auto mb-4" />
+                <p className="text-gray-500">No masjids found nearby</p>
+              </div>
+            ) : (
+              mosques.map((mosque) => (
+                <Card
+                  key={mosque.id}
+                  onClick={() => setSelectedMosque(mosque)}
+                  className={`relative overflow-hidden border-none rounded-3xl p-4 transition-all shadow-sm cursor-pointer ${
+                    selectedMosque?.id === mosque.id ? 'ring-2 ring-purple-400' : 'bg-white hover:shadow-md'
+                  }`}
+                >
+                  <div className="flex gap-4">
+                    <div className="w-24 h-24 rounded-2xl overflow-hidden flex-shrink-0 bg-gray-100">
+                      <img 
+                        src={mosque.rating ? `https://images.unsplash.com/photo-1542610121-31406836968d?w=200&h=200&fit=crop` : '/logo.jpg'} 
+                        alt={mosque.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex justify-between items-start mb-1">
+                        <span className="text-xs font-bold text-blue-400">4.0 Km</span>
+                        <div className="flex items-center gap-1 bg-yellow-50 px-2 py-0.5 rounded-full">
+                          <span className="text-xs font-bold text-yellow-600">4.5</span>
+                          <span className="text-[10px] text-yellow-400">★</span>
+                        </div>
+                      </div>
+                      <h3 className="font-bold text-[#4B3F72] text-lg truncate mb-1">{mosque.name}</h3>
+                      <p className="text-xs text-gray-400 line-clamp-2 mb-3">{mosque.address}</p>
+                      <Button 
+                        variant="secondary" 
+                        size="sm" 
+                        className="bg-purple-50 text-purple-600 hover:bg-purple-100 rounded-xl px-4 h-8 text-xs font-bold"
+                      >
+                        Get Directions
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              ))
+            )}
           </div>
 
-          {/* Right Side - Map & Details */}
-          <div className="lg:col-span-2 flex flex-col gap-4 overflow-hidden">
-            {/* Map */}
-            <Card className="border-slate-700 bg-slate-800 flex-1 overflow-hidden p-0">
+          {/* Map View */}
+          <div className="relative">
+            <Card className="border-none bg-white rounded-[40px] overflow-hidden shadow-sm h-[500px] lg:sticky lg:top-24">
               <MosqueMap mosques={mosques} />
             </Card>
-
-            {/* Selected Mosque Details */}
-            {selectedMosque && (
-              <Card className="border-slate-700 bg-slate-800 p-4">
-                <h2 className="text-lg font-bold text-white mb-3">{selectedMosque.name}</h2>
-                <div className="space-y-2 text-sm text-slate-300">
-                  <div className="flex items-start gap-2">
-                    <MapPin className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p>{selectedMosque.address}</p>
-                      {selectedMosque.city && <p className="text-slate-400">{selectedMosque.city}</p>}
-                    </div>
-                  </div>
-                  {selectedMosque.phone && (
-                    <div className="flex items-center gap-2">
-                      <Phone className="w-4 h-4 text-emerald-400" />
-                      <a href={`tel:${selectedMosque.phone}`} className="hover:text-emerald-400">
-                        {selectedMosque.phone}
-                      </a>
-                    </div>
-                  )}
-                  {selectedMosque.email && (
-                    <div className="flex items-center gap-2">
-                      <Mail className="w-4 h-4 text-emerald-400" />
-                      <a href={`mailto:${selectedMosque.email}`} className="hover:text-emerald-400">
-                        {selectedMosque.email}
-                      </a>
-                    </div>
-                  )}
-                  <div className="flex items-center gap-2 text-slate-500">
-                    <MapPin className="w-4 h-4" />
-                    <span className="text-xs">
-                      {selectedMosque.latitude.toFixed(4)}, {selectedMosque.longitude.toFixed(4)}
-                    </span>
-                  </div>
-                </div>
-              </Card>
-            )}
           </div>
         </div>
       </div>
