@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -H 0.0.0.0 -p 5000",
     "build": "next build",
     "start": "next start",
     "lint": "eslint ."
@@ -13,7 +13,7 @@
     "@vercel/analytics": "1.6.1",
     "pg": "^8.11.3",
     "drizzle-orm": "^0.30.10",
-    "react-leaflet": "^4.2.3",
+    "react-leaflet": "^5.0.0",
     "leaflet": "^1.9.4",
     "bcryptjs": "^2.4.3",
     "@radix-ui/react-accordion": "1.2.12",
