@@ -13,9 +13,6 @@ function getPool(): Pool {
 
     pool = new Pool({
       connectionString: databaseUrl,
-      ssl: {
-        rejectUnauthorized: false,
-      },
     });
 
     // Handle errors
