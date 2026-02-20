@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
 
 // Dynamic import of MapContainer and other react-leaflet components
 const MapContainer = dynamic(
@@ -43,12 +41,20 @@ interface MosqueMapProps {
 
 // Custom icon for mosques
 const createMosqueIcon = () => {
-  return L.icon({
-    iconUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHJ4PSI4IiBmaWxsPSIjMTBiOTgxIi8+PHBhdGggZD0iTTI0IDEwQzIxLjc5IDEwIDIwIDExLjc5IDIwIDE0QzIwIDE3LjMxIDI0IDIyIDI0IDIyQzI0IDIyIDI4IDE3LjMxIDI4IDE0QzI4IDExLjc5IDI2LjIxIDEwIDI0IDEwWiIgZmlsbD0id2hpdGUiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjE0IiByPSIyIiBmaWxsPSIjMTBiOTgxIi8+PHBhdGggZD0iTTI0IDI0QzIwLjEzIDI0IDE3IDI3LjEzIDE3IDMxVjM0QzE3IDM1LjEwNDYgMTcuODk1NCAzNiAxOSAzNkgzMUMzMi4xMDQ2IDM2IDMzIDM1LjEwNDYgMzMgMzRWMzFDMzMgMjcuMTMgMjkuODcgMjQgMjYgMjRIMjRaIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==',
-    iconSize: [48, 48],
-    iconAnchor: [24, 48],
-    popupAnchor: [0, -48],
-  });
+  if (typeof window === 'undefined') return null;
+  
+  try {
+    const L = require('leaflet');
+    return L.icon({
+      iconUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHJ4PSI4IiBmaWxsPSIjMTBiOTgxIi8+PHBhdGggZD0iTTI0IDEwQzIxLjc5IDEwIDIwIDExLjc5IDIwIDE0QzIwIDE3LjMxIDI0IDIyIDI0IDIyQzI0IDIyIDI4IDE3LjMxIDI4IDE0QzI4IDExLjc5IDI2LjIxIDEwIDI0IDEwWiIgZmlsbD0id2hpdGUiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjE0IiByPSIyIiBmaWxsPSIjMTBiOTgxIi8+PHBhdGggZD0iTTI0IDI0QzIwLjEzIDI0IDE3IDI3LjEzIDE3IDMxVjM0QzE3IDM1LjEwNDYgMTcuODk1NCAzNiAxOSAzNkgzMUMzMi4xMDQ2IDM2IDMzIDM1LjEwNDYgMzMgMzRWMzFDMzMgMjcuMTMgMjkuODcgMjQgMjYgMjRIMjRaIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==',
+      iconSize: [48, 48],
+      iconAnchor: [24, 48],
+      popupAnchor: [0, -48],
+    });
+  } catch (error) {
+    console.error('Error creating mosque icon:', error);
+    return null;
+  }
 };
 
 export default function MosqueMap({ mosques }: MosqueMapProps) {

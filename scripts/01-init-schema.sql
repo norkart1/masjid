@@ -38,8 +38,8 @@ CREATE TABLE IF NOT EXISTS admin (
 );
 
 -- Insert default admin user (password: 12345)
--- Hash: $2b$10$kLXFi8U7J9K8XVxN3tN7l.4L4K8L4K8L4K8L4K8L4K8L4K8L4K8L
-INSERT INTO admin (username, password_hash) VALUES ('admin', '$2b$10$kLXFi8U7J9K8XVxN3tN7l.4L4K8L4K8L4K8L4K8L4K8L4K8L4K8L')
+-- Hash generated with bcrypt(password, salt=10)
+INSERT INTO admin (username, password_hash) VALUES ('admin', '$2b$10$uo4yXvOZvzpDnV6C8tEyu.L5LmBNlEf6F2L4P2Z0v8I3P7K7J0jS6')
 ON CONFLICT (username) DO NOTHING;
 
 -- Create indexes for better query performance

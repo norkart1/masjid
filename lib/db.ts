@@ -3,24 +3,32 @@ import { Pool } from 'pg';
 // Get database URL from environment variables
 const databaseUrl = process.env.DATABASE_URL;
 
-if (!databaseUrl) {
-  throw new Error('DATABASE_URL environment variable is not set');
+let pool: Pool | null = null;
+
+function getPool(): Pool {
+  if (!pool) {
+    if (!databaseUrl) {
+      throw new Error('DATABASE_URL environment variable is not set');
+    }
+
+    pool = new Pool({
+      connectionString: databaseUrl,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    // Handle errors
+    pool.on('error', (err) => {
+      console.error('Unexpected error on idle client', err);
+    });
+  }
+
+  return pool;
 }
 
-// Create a connection pool
-const pool = new Pool({
-  connectionString: databaseUrl,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
-
-// Test the connection
-pool.on('error', (err) => {
-  console.error('Unexpected error on idle client', err);
-});
-
 export async function query(text: string, params?: any[]) {
+  const pool = getPool();
   const client = await pool.connect();
   try {
     return await client.query(text, params);
@@ -30,7 +38,8 @@ export async function query(text: string, params?: any[]) {
 }
 
 export async function getClient() {
+  const pool = getPool();
   return pool.connect();
 }
 
-export { pool };
+export { getPool };
