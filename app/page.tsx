@@ -25,16 +25,12 @@ export default function Home() {
   const [searchCity, setSearchCity] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [selectedMosque, setSelectedMosque] = useState<Mosque | null>(null);
-  const [activeTab, setActiveTab] = useState<'home' | 'search' | 'add' | 'prayers' | 'settings'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'settings'>('home');
 
   const fetchMosques = useCallback(async () => {
     try {
       setIsLoading(true);
-      let url = '/api/mosques';
-      if (searchCity) {
-        url += `?city=${encodeURIComponent(searchCity)}`;
-      }
-      const response = await fetch(url);
+      const response = await fetch('/api/mosques');
       if (!response.ok) throw new Error('Failed to fetch');
       const data = await response.json();
       setMosques(data);
@@ -43,7 +39,7 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  }, [searchCity]);
+  }, []);
 
   useEffect(() => {
     fetchMosques();
@@ -59,16 +55,19 @@ export default function Home() {
         />
         <div className="absolute inset-0 flex flex-col justify-center px-8 text-white">
           <h2 className="text-3xl font-bold mb-2">Find Your Peace</h2>
-          <p className="text-white/80 font-medium">Discover 500+ Masjids near your location</p>
+          <p className="text-white/80 font-medium">Discover sacred spaces near you</p>
         </div>
       </section>
 
-      <div className="flex items-center justify-between">
-        <h3 className="text-2xl font-bold text-[#1A1C1E]">Featured Masjids</h3>
-        <Button variant="ghost" className="text-[#6B4EFF] font-bold">View All</Button>
+      <div className="h-[400px] rounded-[40px] overflow-hidden shadow-2xl relative border-8 border-white">
+        <MosqueMap mosques={mosques} />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="flex items-center justify-between">
+        <h3 className="text-2xl font-bold text-[#1A1C1E]">Nearby Masjids</h3>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-8">
         {isLoading ? (
           [1, 2].map(i => <div key={i} className="h-40 bg-gray-100 rounded-[32px] animate-pulse" />)
         ) : mosques.map((mosque) => (
@@ -98,29 +97,6 @@ export default function Home() {
             </div>
           </Card>
         ))}
-      </div>
-    </div>
-  );
-
-  const renderSearch = () => (
-    <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-500">
-      <div className="relative">
-        <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400" />
-        <Input 
-          value={searchCity}
-          onChange={(e) => setSearchCity(e.target.value)}
-          placeholder="Search by city, name or zip..." 
-          className="h-16 pl-14 pr-6 rounded-3xl border-none shadow-xl text-lg"
-        />
-        <Button className="absolute right-3 top-1/2 -translate-y-1/2 rounded-2xl bg-[#6B4EFF] h-10">Search</Button>
-      </div>
-      <div className="h-[500px] rounded-[40px] overflow-hidden shadow-2xl relative border-8 border-white">
-        <MosqueMap mosques={mosques} />
-        <div className="absolute top-4 right-4 z-10 space-y-2">
-          <Button variant="secondary" className="w-12 h-12 rounded-2xl bg-white/90 backdrop-blur shadow-lg p-0">
-            <Filter className="w-5 h-5" />
-          </Button>
-        </div>
       </div>
     </div>
   );
@@ -169,12 +145,10 @@ export default function Home() {
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight text-[#1A1C1E]">
             {activeTab === 'home' && "Explorer"}
-            {activeTab === 'search' && "Find Masjid"}
             {activeTab === 'settings' && "Settings"}
           </h1>
           <p className="text-gray-500 font-semibold mt-1">
             {activeTab === 'home' && "Discover sacred spaces"}
-            {activeTab === 'search' && "Locate the nearest masjid"}
             {activeTab === 'settings' && "Manage your experience"}
           </p>
         </div>
@@ -186,37 +160,23 @@ export default function Home() {
       {/* Main Content */}
       <main className="max-w-5xl mx-auto px-8">
         {activeTab === 'home' && renderHome()}
-        {activeTab === 'search' && renderSearch()}
         {activeTab === 'settings' && renderSettings()}
       </main>
 
       {/* Luxury Bottom Nav */}
-      <nav className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-lg bg-white/80 backdrop-blur-3xl rounded-[35px] shadow-[0_20px_60px_rgba(0,0,0,0.1)] border border-white/50 p-3 flex items-center justify-between z-50">
+      <nav className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[60%] max-w-sm bg-white/80 backdrop-blur-3xl rounded-[35px] shadow-[0_20px_60px_rgba(0,0,0,0.1)] border border-white/50 p-3 flex items-center justify-around z-50">
         {[
           { id: 'home', icon: MapIcon, label: 'Home' },
-          { id: 'search', icon: Search, label: 'Search' },
-          { id: 'add', icon: Plus, isAction: true },
-          { id: 'prayers', icon: List, label: 'Prayers' },
           { id: 'settings', icon: Settings, label: 'Settings' }
         ].map((item) => (
-          item.isAction ? (
-            <Button 
-              key={item.id}
-              onClick={() => setActiveTab('search')}
-              className="w-16 h-16 rounded-3xl bg-[#1A1C1E] shadow-2xl hover:scale-110 transition-transform p-0 group"
-            >
-              <Plus className="w-8 h-8 text-white group-hover:rotate-90 transition-transform" />
-            </Button>
-          ) : (
-            <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id as any)}
-              className={`flex flex-col items-center gap-1.5 px-4 py-2 rounded-2xl transition-all ${activeTab === item.id ? 'text-[#6B4EFF] bg-[#6B4EFF]/5' : 'text-gray-400 hover:text-gray-600'}`}
-            >
-              <item.icon className={`w-6 h-6 ${activeTab === item.id ? 'fill-[#6B4EFF]/10' : ''}`} />
-              <span className="text-[10px] font-bold uppercase tracking-widest">{item.label}</span>
-            </button>
-          )
+          <button
+            key={item.id}
+            onClick={() => setActiveTab(item.id as any)}
+            className={`flex flex-col items-center gap-1.5 px-6 py-2 rounded-2xl transition-all ${activeTab === item.id ? 'text-[#6B4EFF] bg-[#6B4EFF]/5' : 'text-gray-400 hover:text-gray-600'}`}
+          >
+            <item.icon className={`w-6 h-6 ${activeTab === item.id ? 'fill-[#6B4EFF]/10' : ''}`} />
+            <span className="text-[10px] font-bold uppercase tracking-widest">{item.label}</span>
+          </button>
         ))}
       </nav>
     </div>
