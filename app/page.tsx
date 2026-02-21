@@ -45,14 +45,14 @@ export default function Home() {
   const renderHome = () => (
     <div className="flex flex-col animate-in fade-in duration-500">
       {/* Header Section with Purple Gradient */}
-      <section className="bg-gradient-to-b from-[#7C5CC4] to-[#9D7CD8] px-6 pt-12 pb-24 rounded-b-[40px] relative">
-        <div className="flex justify-between items-start mb-6 text-white">
-          <div>
-            <h1 className="text-3xl font-bold mb-1">Welcome, Omar</h1>
-            <p className="opacity-90 text-sm font-medium">Monday, 21 December 2020</p>
+      <section className="bg-[#7C5CC4] px-6 pt-16 pb-32 rounded-b-[60px] relative shadow-lg">
+        <div className="flex justify-between items-center mb-10 text-white">
+          <div className="space-y-1">
+            <h1 className="text-4xl font-extrabold tracking-tight">Welcome, Omar</h1>
+            <p className="opacity-80 text-base font-semibold">Monday, 21 December 2020</p>
           </div>
-          <Button variant="ghost" className="text-white hover:bg-white/10 rounded-full p-2 h-auto">
-            <Filter className="w-6 h-6" />
+          <Button variant="ghost" className="text-white hover:bg-white/10 rounded-2xl p-2 h-12 w-12 flex items-center justify-center">
+            <Filter className="w-8 h-8" />
           </Button>
         </div>
 
@@ -60,20 +60,20 @@ export default function Home() {
         <div className="relative group">
           <Input 
             placeholder="Find Nearest Masjid..." 
-            className="h-14 pl-12 pr-12 rounded-2xl border-none bg-white shadow-lg text-gray-700 placeholder:text-gray-400 focus-visible:ring-0"
+            className="h-20 pl-16 pr-16 rounded-[30px] border-none bg-white shadow-2xl text-xl text-gray-700 placeholder:text-gray-400 focus-visible:ring-0"
           />
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-          <Target className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black" />
+          <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-8 h-8 text-gray-400" />
+          <Target className="absolute right-6 top-1/2 -translate-y-1/2 w-8 h-8 text-gray-900" />
         </div>
       </section>
 
       {/* Main White Content Area */}
-      <section className="bg-white -mt-10 rounded-t-[40px] px-6 pt-8 pb-32 min-h-screen">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-bold text-[#1A1C1E]">{mosques.length || 10} Nearest Mosques</h3>
+      <section className="bg-white px-6 pt-10 pb-40 min-h-screen">
+        <div className="flex items-center justify-between mb-8">
+          <h3 className="text-2xl font-black text-[#1A1C1E] tracking-tight">10 Nearest Mosques</h3>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-10">
           {isLoading ? (
             [1, 2, 3].map(i => <div key={i} className="h-32 bg-gray-50 rounded-3xl animate-pulse" />)
           ) : mosques.length === 0 ? (
@@ -83,45 +83,45 @@ export default function Home() {
               { name: 'Rahman Mosque', dist: '5.5', addr: 'Mahmoud Shaheen, Mansoura Qism 2, Dakahlia Governorate.', img: 'https://images.unsplash.com/photo-1590076215667-873d6f00918c?w=300' },
               { name: 'Alqady Mosque', dist: '6.0', addr: 'Mahmoud Shaheen, Mansoura Qism 2, Dakahlia Governorate.', img: 'https://images.unsplash.com/photo-1564769662533-4f00a87b4056?w=300' }
             ].map((m, i) => (
-              <div key={i} className="flex gap-4 group">
-                <div className="w-28 h-28 rounded-2xl overflow-hidden bg-gray-100 flex-shrink-0 shadow-sm">
+              <div key={i} className="flex gap-6 items-center">
+                <div className="w-36 h-36 rounded-[40px] overflow-hidden bg-gray-100 flex-shrink-0 shadow-sm border-4 border-white">
                   <img src={m.img} alt={m.name} className="w-full h-full object-cover" />
                 </div>
-                <div className="flex-1 min-w-0 py-1">
-                  <div className="flex justify-between items-start mb-0.5">
-                    <span className="text-sm font-black text-[#2D9CDB] tracking-tight">{m.dist} <span className="text-[10px] font-bold">Km</span></span>
-                    <div className="flex items-center gap-1 bg-[#FDF4E3] px-1.5 py-0.5 rounded-lg border border-[#F9E8C8]">
-                      <span className="text-[10px] font-bold text-[#D4AF37]">4.5</span>
-                      <span className="text-[8px] text-[#D4AF37]">★</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-lg font-black text-[#2D9CDB] tracking-tighter">{m.dist} <span className="text-xs font-bold">Km</span></span>
+                    <div className="flex items-center gap-1.5 bg-[#FEF9EC] px-3 py-1 rounded-2xl border border-[#F9E8C8]">
+                      <span className="text-sm font-black text-[#D4AF37]">4.5</span>
+                      <span className="text-xs text-[#D4AF37]">★</span>
                     </div>
                   </div>
-                  <h4 className="font-bold text-xl text-[#1A1C1E] leading-tight mb-1">{m.name}</h4>
-                  <p className="text-[11px] text-gray-500 font-medium leading-relaxed mb-3 line-clamp-2">{m.addr}</p>
-                  <Button variant="secondary" className="bg-[#E9DDFE] hover:bg-[#DED0FB] text-[#7C5CC4] rounded-xl h-8 px-5 text-[11px] font-bold shadow-sm flex items-center gap-2">
+                  <h4 className="font-black text-2xl text-[#1A1C1E] leading-tight mb-2">{m.name}</h4>
+                  <p className="text-sm text-gray-500 font-bold leading-snug mb-4 line-clamp-2 pr-4">{m.addr}</p>
+                  <Button variant="secondary" className="bg-[#F3EAFD] hover:bg-[#E9DDFE] text-[#7C5CC4] rounded-2xl h-11 px-6 text-sm font-black shadow-sm flex items-center gap-3 w-fit transition-all active:scale-95">
                     Get Directions
-                    <Navigation className="w-3 h-3 rotate-45" />
+                    <Navigation className="w-5 h-5 rotate-45" />
                   </Button>
                 </div>
               </div>
             ))
           ) : mosques.map((mosque, i) => (
-            <div key={mosque.id} className="flex gap-4">
-              <div className="w-28 h-28 rounded-2xl overflow-hidden bg-gray-100 flex-shrink-0 shadow-sm">
+            <div key={mosque.id} className="flex gap-6 items-center">
+              <div className="w-36 h-36 rounded-[40px] overflow-hidden bg-gray-100 flex-shrink-0 shadow-sm border-4 border-white">
                 <img src={`https://images.unsplash.com/photo-1542610121-31406836968d?w=300&sig=${i}`} alt={mosque.name} className="w-full h-full object-cover" />
               </div>
-              <div className="flex-1 min-w-0 py-1">
-                <div className="flex justify-between items-start mb-0.5">
-                  <span className="text-sm font-black text-[#2D9CDB] tracking-tight">4.0 <span className="text-[10px] font-bold">Km</span></span>
-                  <div className="flex items-center gap-1 bg-[#FDF4E3] px-1.5 py-0.5 rounded-lg border border-[#F9E8C8]">
-                    <span className="text-[10px] font-bold text-[#D4AF37]">4.5</span>
-                    <span className="text-[8px] text-[#D4AF37]">★</span>
+              <div className="flex-1 min-w-0">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-lg font-black text-[#2D9CDB] tracking-tighter">4.0 <span className="text-xs font-bold">Km</span></span>
+                  <div className="flex items-center gap-1.5 bg-[#FEF9EC] px-3 py-1 rounded-2xl border border-[#F9E8C8]">
+                    <span className="text-sm font-black text-[#D4AF37]">4.5</span>
+                    <span className="text-xs text-[#D4AF37]">★</span>
                   </div>
                 </div>
-                <h4 className="font-bold text-xl text-[#1A1C1E] leading-tight mb-1">{mosque.name}</h4>
-                <p className="text-[11px] text-gray-500 font-medium leading-relaxed mb-3 line-clamp-2">{mosque.address}</p>
-                <Button variant="secondary" className="bg-[#E9DDFE] hover:bg-[#DED0FB] text-[#7C5CC4] rounded-xl h-8 px-5 text-[11px] font-bold shadow-sm flex items-center gap-2">
+                <h4 className="font-black text-2xl text-[#1A1C1E] leading-tight mb-2">{mosque.name}</h4>
+                <p className="text-sm text-gray-500 font-bold leading-snug mb-4 line-clamp-2 pr-4">{mosque.address}</p>
+                <Button variant="secondary" className="bg-[#F3EAFD] hover:bg-[#E9DDFE] text-[#7C5CC4] rounded-2xl h-11 px-6 text-sm font-black shadow-sm flex items-center gap-3 w-fit transition-all active:scale-95">
                   Get Directions
-                  <Navigation className="w-3 h-3 rotate-45" />
+                  <Navigation className="w-5 h-5 rotate-45" />
                 </Button>
               </div>
             </div>
@@ -129,40 +129,49 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-50 h-24 px-12 flex items-center justify-between z-50 rounded-t-[40px] shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
-        <button 
-          onClick={() => setActiveTab('home')}
-          className={`flex flex-col items-center gap-1 ${activeTab === 'home' ? 'text-[#2D9CDB]' : 'text-gray-300'}`}
-        >
-          <HomeIcon className="w-7 h-7" />
-          <span className="text-[10px] font-bold">Home</span>
-        </button>
+      {/* Fixed Footer Menu Design */}
+      <div className="fixed bottom-0 left-0 right-1.5 z-50 px-6 pb-8">
+        <nav className="bg-white h-24 rounded-[45px] shadow-[0_-20px_50px_rgba(0,0,0,0.08)] border border-gray-50 flex items-center justify-between px-16 relative">
+          <button 
+            onClick={() => setActiveTab('home')}
+            className={`flex flex-col items-center gap-1.5 transition-all duration-300 ${activeTab === 'home' ? 'text-[#2D9CDB] scale-110' : 'text-gray-300 hover:text-gray-400'}`}
+          >
+            <HomeIcon className={`w-8 h-8 ${activeTab === 'home' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
+            <span className="text-xs font-black tracking-wider uppercase">Home</span>
+          </button>
 
-        <div className="relative -top-8">
-          <Button className="w-16 h-16 rounded-full bg-[#7C5CC4] shadow-[0_10px_30px_rgba(124,92,196,0.3)] flex items-center justify-center p-0 border-[6px] border-white">
-            <Plus className="w-8 h-8 text-white" />
-          </Button>
-        </div>
+          <div className="absolute left-1/2 -translate-x-1/2 -top-10">
+            <Button className="w-20 h-20 rounded-full bg-[#7C5CC4] shadow-[0_15px_35px_rgba(124,92,196,0.4)] flex items-center justify-center p-0 border-[8px] border-white hover:scale-110 active:scale-95 transition-all duration-300">
+              <Plus className="w-10 h-10 text-white stroke-[3px]" />
+            </Button>
+          </div>
 
-        <button 
-          onClick={() => setActiveTab('settings')}
-          className={`flex flex-col items-center gap-1 ${activeTab === 'settings' ? 'text-[#2D9CDB]' : 'text-gray-300'}`}
-        >
-          <Settings className="w-7 h-7" />
-          <span className="text-[10px] font-bold">Settings</span>
-        </button>
-      </nav>
+          <button 
+            onClick={() => setActiveTab('settings')}
+            className={`flex flex-col items-center gap-1.5 transition-all duration-300 ${activeTab === 'settings' ? 'text-[#2D9CDB] scale-110' : 'text-gray-300 hover:text-gray-400'}`}
+          >
+            <Settings className={`w-8 h-8 ${activeTab === 'settings' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
+            <span className="text-xs font-black tracking-wider uppercase">Settings</span>
+          </button>
+        </nav>
+      </div>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-[#FDFDFF] font-sans antialiased">
-      <main className="max-w-md mx-auto relative min-h-screen shadow-2xl bg-white overflow-hidden">
+    <div className="min-h-screen bg-white font-sans antialiased">
+      <main className="max-w-md mx-auto relative min-h-screen bg-white shadow-2xl overflow-hidden scrollbar-hide">
         {activeTab === 'home' ? renderHome() : (
-          <div className="p-8 text-center pt-24">
-            <h2 className="text-2xl font-bold mb-4">Settings</h2>
-            <Button onClick={() => setActiveTab('home')} className="bg-[#7C5CC4]">Back to Home</Button>
+          <div className="flex flex-col animate-in fade-in duration-500">
+             <section className="bg-[#7C5CC4] px-6 pt-16 pb-20 rounded-b-[60px] text-white">
+                <h1 className="text-4xl font-extrabold mb-2">Settings</h1>
+                <p className="opacity-80 font-semibold">Customize your app experience</p>
+             </section>
+             <div className="p-10 space-y-6">
+                <Button onClick={() => setActiveTab('home')} className="w-full h-16 rounded-3xl bg-[#7C5CC4] text-xl font-bold shadow-xl">
+                  Back to Dashboard
+                </Button>
+             </div>
           </div>
         )}
       </main>
