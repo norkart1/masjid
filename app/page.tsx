@@ -98,46 +98,9 @@ export default function Home() {
               </div>
             ))
           ) : mosques.length === 0 ? (
-            // Custom Mosque Cards following the design reference
-            [
-              { 
-                title: 'Getting my first UI/UX Design Internship', 
-                date: 'Jan 12', 
-                readTime: '8 min read',
-                img: 'https://images.unsplash.com/photo-1542610121-31406836968d?w=500&q=80',
-                color: 'bg-blue-50'
-              },
-              { 
-                title: 'The Worst Career Mistake Junior UX Designers Make', 
-                date: 'Jan 10', 
-                readTime: '4 min read',
-                img: 'https://images.unsplash.com/photo-1590076215667-873d6f00918c?w=500&q=80',
-                color: 'bg-pink-50'
-              },
-              { 
-                title: "You're not Lazy, Bored or unmotivated.", 
-                date: 'Jan 8', 
-                readTime: '5 min read',
-                img: 'https://images.unsplash.com/photo-1564769662533-4f00a87b4056?w=500&q=80',
-                color: 'bg-orange-50'
-              }
-            ].map((item, i) => (
-              <div key={i} className="flex gap-6 items-start group cursor-pointer">
-                <div className={`w-32 h-32 md:w-48 md:h-32 rounded-2xl overflow-hidden flex-shrink-0 ${item.color} shadow-sm group-hover:shadow-md transition-shadow`}>
-                  <img src={item.img} alt={item.title} className="w-full h-full object-cover mix-blend-multiply opacity-90" />
-                </div>
-                <div className="flex-1 py-1">
-                  <h4 className="font-bold text-xl md:text-2xl text-gray-900 leading-tight mb-3 group-hover:text-gray-600 transition-colors">
-                    {item.title}
-                  </h4>
-                  <div className="flex items-center gap-2 text-gray-400 font-medium text-sm md:text-base">
-                    <span>{item.date}</span>
-                    <span className="w-1 h-1 bg-gray-300 rounded-full" />
-                    <span>{item.readTime}</span>
-                  </div>
-                </div>
-              </div>
-            ))
+            <div className="text-center py-20">
+              <p className="text-gray-400 text-lg font-medium">No mosques found. Start by searching or adding a mosque.</p>
+            </div>
           ) : mosques.map((mosque, i) => (
             <div key={mosque.id} className="flex gap-6 items-start group cursor-pointer">
               <div className="w-32 h-32 md:w-48 md:h-32 rounded-2xl overflow-hidden flex-shrink-0 bg-gray-50 shadow-sm group-hover:shadow-md transition-shadow">
