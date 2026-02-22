@@ -52,27 +52,7 @@ export default function Home() {
       {/* Main Mobile-First Container */}
       <main className="w-full max-w-md bg-white md:rounded-[40px] shadow-2xl overflow-hidden min-h-screen md:min-h-[850px] relative flex flex-col">
         
-        {/* Header Section */}
-        <header className="px-6 pt-10 pb-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md">
-              <img 
-                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Kitty" 
-                alt="Profile" 
-                className="w-full h-full object-cover bg-gray-100"
-              />
-            </div>
-            <div>
-              <p className="text-gray-500 text-sm font-medium">Hi</p>
-              <h1 className="text-xl font-bold text-gray-900 leading-tight">Kitty!</h1>
-            </div>
-          </div>
-          <button className="p-2 hover:bg-gray-50 rounded-full transition-colors">
-            <Menu className="w-6 h-6 text-gray-800" />
-          </button>
-        </header>
-
-        <div className="px-6 py-4">
+        <div className="px-6 py-4 pt-10">
           <h2 className="text-2xl font-bold text-gray-900 leading-tight max-w-[200px]">
             Find the best masjids near you...
           </h2>
@@ -91,34 +71,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Categories Section */}
-        <div className="px-6 mb-8 flex items-center gap-3 overflow-x-auto scrollbar-hide py-1">
-          <button className="w-12 h-12 flex-shrink-0 bg-white rounded-2xl shadow-sm border border-gray-50 flex items-center justify-center hover:bg-gray-50 transition-colors">
-            <div className="grid grid-cols-2 gap-0.5">
-              <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
-              <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
-              <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
-              <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
-            </div>
-          </button>
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-8 h-12 rounded-2xl font-semibold transition-all whitespace-nowrap shadow-sm border ${
-                activeCategory === cat 
-                ? 'bg-[#1C1C1C] text-white border-transparent' 
-                : 'bg-white text-gray-400 border-gray-50 hover:bg-gray-50'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
         {/* Favourite Section */}
         <section className="px-6 mb-8">
-          <h3 className="text-lg font-bold text-gray-900 mb-4">Favourite</h3>
           <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-2">
             {isLoading ? (
               [1, 2, 3].map(i => (
@@ -186,7 +140,6 @@ export default function Home() {
 
         {/* Recommended Section */}
         <section className="px-6 pb-10 flex-grow">
-          <h3 className="text-lg font-bold text-gray-900 mb-4">Recommended</h3>
           {recommended ? (
             <div className="bg-white rounded-[32px] p-4 shadow-[0_10px_40px_rgba(0,0,0,0.06)] border border-gray-50 flex items-center gap-4 group cursor-pointer hover:shadow-lg transition-shadow">
               <div className="w-24 h-24 rounded-2xl overflow-hidden flex-shrink-0">
