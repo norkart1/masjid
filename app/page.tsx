@@ -53,7 +53,13 @@ export default function Home() {
       <main className="w-full max-w-md bg-white md:rounded-[40px] shadow-2xl overflow-hidden min-h-screen md:min-h-[850px] relative flex flex-col">
         
         {/* Header Section */}
-        <header className="px-6 pt-10 pb-4 flex items-center justify-end">
+        <header className="px-6 pt-10 pb-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0">
+              <img src="/logo.png" alt="MasjidFinder Logo" className="w-full h-full object-contain" />
+            </div>
+            <span className="text-xl font-bold text-gray-900 tracking-tight">MasjidFinder</span>
+          </div>
           <button className="p-2 hover:bg-gray-50 rounded-full transition-colors">
             <Menu className="w-6 h-6 text-gray-800" />
           </button>
