@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Input } from '@/components/ui/input';
-import { Search, Menu } from 'lucide-react';
+import { Search, Menu, Star, Clock } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 interface Mosque {
   id: number;
@@ -15,12 +16,15 @@ interface Mosque {
   phone?: string;
   email?: string;
   rating?: number;
+  image_url?: string;
 }
 
 export default function Home() {
   const [mosques, setMosques] = useState<Mosque[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'Featured' | 'Latest' | 'Trending'>('Featured');
+  const [activeCategory, setActiveCategory] = useState('All');
+
+  const categories = ['All', 'Masjid', 'Musalla', 'Community'];
 
   const fetchMosques = useCallback(async () => {
     try {
@@ -40,89 +44,215 @@ export default function Home() {
     fetchMosques();
   }, [fetchMosques]);
 
+  const favorites = mosques.slice(0, 3);
+  const recommended = mosques.length > 0 ? mosques[0] : null;
+
   return (
-    <div className="min-h-screen bg-[#F0F5FA] font-sans antialiased flex justify-center items-start md:py-10">
-      {/* Main Container - Mobile Responsive and Desktop Support */}
-      <main className="w-full max-w-4xl bg-white md:rounded-[60px] shadow-2xl overflow-hidden min-h-screen md:min-h-[90vh] relative">
+    <div className="min-h-screen bg-[#F8F9FB] font-sans antialiased flex justify-center items-start md:py-10">
+      {/* Main Mobile-First Container */}
+      <main className="w-full max-w-md bg-white md:rounded-[40px] shadow-2xl overflow-hidden min-h-screen md:min-h-[850px] relative flex flex-col">
         
         {/* Header Section */}
-        <header className="px-8 pt-12 pb-6 flex items-center justify-between">
-          <button className="p-2 hover:bg-gray-100 rounded-xl transition-colors">
-            <Menu className="w-8 h-8 text-gray-800" />
-          </button>
-          <div className="w-12 h-12 rounded-2xl overflow-hidden border-2 border-purple-100 shadow-sm">
-            <img 
-              src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" 
-              alt="Profile" 
-              className="w-full h-full object-cover bg-purple-500"
-            />
+        <header className="px-6 pt-10 pb-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md">
+              <img 
+                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Kitty" 
+                alt="Profile" 
+                className="w-full h-full object-cover bg-gray-100"
+              />
+            </div>
+            <div>
+              <p className="text-gray-500 text-sm font-medium">Hi</p>
+              <h1 className="text-xl font-bold text-gray-900 leading-tight">Kitty!</h1>
+            </div>
           </div>
+          <button className="p-2 hover:bg-gray-50 rounded-full transition-colors">
+            <Menu className="w-6 h-6 text-gray-800" />
+          </button>
         </header>
 
+        <div className="px-6 py-4">
+          <h2 className="text-2xl font-bold text-gray-900 leading-tight max-w-[200px]">
+            Find the best masjids near you...
+          </h2>
+        </div>
+
         {/* Search Bar Section */}
-        <div className="px-8 mb-10">
+        <div className="px-6 mb-6">
           <div className="relative group">
+            <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-gray-600 transition-colors">
+              <Search className="w-5 h-5" />
+            </div>
             <Input 
               placeholder="Search" 
-              className="h-16 pl-14 pr-6 rounded-2xl border-none bg-[#F5F5F5] text-lg text-gray-700 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-gray-100 transition-all"
+              className="h-14 pl-14 pr-6 rounded-2xl border-none bg-white shadow-[0_4px_20px_rgba(0,0,0,0.05)] text-base text-gray-700 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-gray-100 transition-all"
             />
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400" />
           </div>
         </div>
 
-        {/* Tabs Section */}
-        <div className="px-8 mb-10 flex items-center gap-8 overflow-x-auto scrollbar-hide">
-          {(['Featured', 'Latest', 'Trending'] as const).map((tab) => (
+        {/* Categories Section */}
+        <div className="px-6 mb-8 flex items-center gap-3 overflow-x-auto scrollbar-hide py-1">
+          <button className="w-12 h-12 flex-shrink-0 bg-white rounded-2xl shadow-sm border border-gray-50 flex items-center justify-center hover:bg-gray-50 transition-colors">
+            <div className="grid grid-cols-2 gap-0.5">
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
+            </div>
+          </button>
+          {categories.map((cat) => (
             <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`text-2xl font-bold transition-all whitespace-nowrap ${
-                activeTab === tab ? 'text-black' : 'text-gray-400 hover:text-gray-600'
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-8 h-12 rounded-2xl font-semibold transition-all whitespace-nowrap shadow-sm border ${
+                activeCategory === cat 
+                ? 'bg-[#1C1C1C] text-white border-transparent' 
+                : 'bg-white text-gray-400 border-gray-50 hover:bg-gray-50'
               }`}
             >
-              {tab}
+              {cat}
             </button>
           ))}
         </div>
 
-        {/* Content List */}
-        <div className="px-8 space-y-10 pb-20">
-          {isLoading ? (
-            [1, 2, 3].map(i => (
-              <div key={i} className="flex gap-6 animate-pulse">
-                <div className="w-32 h-32 md:w-48 md:h-32 bg-gray-100 rounded-2xl flex-shrink-0" />
-                <div className="flex-1 space-y-3 py-2">
-                  <div className="h-6 bg-gray-100 rounded-lg w-3/4" />
-                  <div className="h-4 bg-gray-100 rounded-lg w-1/2" />
+        {/* Favourite Section */}
+        <section className="px-6 mb-8">
+          <h3 className="text-lg font-bold text-gray-900 mb-4">Favourite</h3>
+          <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-2">
+            {isLoading ? (
+              [1, 2, 3].map(i => (
+                <div key={i} className="w-[160px] h-[240px] flex-shrink-0 bg-gray-100 rounded-3xl animate-pulse" />
+              ))
+            ) : favorites.length > 0 ? (
+              favorites.map((mosque) => (
+                <div key={mosque.id} className="w-[160px] flex-shrink-0 bg-white rounded-3xl p-3 shadow-[0_10px_30px_rgba(0,0,0,0.04)] border border-gray-50 group cursor-pointer transition-transform hover:scale-[1.02]">
+                  <div className="relative h-[140px] rounded-2xl overflow-hidden mb-3">
+                    <img 
+                      src={mosque.image_url || `https://images.unsplash.com/photo-1542610121-31406836968d?w=300&q=80&sig=${mosque.id}`} 
+                      alt={mosque.name} 
+                      className="w-full h-full object-cover" 
+                    />
+                  </div>
+                  <h4 className="font-bold text-sm text-gray-900 mb-1 line-clamp-2">{mosque.name}</h4>
+                  <div className="flex items-center gap-1 mb-2">
+                    <div className="flex items-center">
+                      {[1, 2, 3, 4].map(star => (
+                        <Star key={star} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                      ))}
+                      <Star className="w-3 h-3 fill-yellow-400/30 text-yellow-400/30" />
+                    </div>
+                    <span className="text-[10px] font-bold text-gray-400">4.7 (5367)</span>
+                  </div>
+                  <div className="space-y-1.5">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[10px] font-bold text-green-500 uppercase">Open</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-gray-400">
+                      <Clock className="w-3 h-3" />
+                      <span className="text-[10px] font-bold">5 min by car</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))
-          ) : mosques.length === 0 ? (
-            <div className="text-center py-20">
-              <p className="text-gray-400 text-lg font-medium">No mosques found. Start by searching or adding a mosque.</p>
-            </div>
-          ) : mosques.map((mosque, i) => (
-            <div key={mosque.id} className="flex gap-6 items-start group cursor-pointer">
-              <div className="w-32 h-32 md:w-48 md:h-32 rounded-2xl overflow-hidden flex-shrink-0 bg-gray-50 shadow-sm group-hover:shadow-md transition-shadow">
+              ))
+            ) : (
+              [1, 2, 3].map(i => (
+                <div key={i} className="w-[160px] flex-shrink-0 bg-white rounded-3xl p-3 shadow-[0_10px_30px_rgba(0,0,0,0.04)] border border-gray-50">
+                  <div className="h-[140px] rounded-2xl overflow-hidden mb-3 bg-gray-100">
+                    <img src={`https://images.unsplash.com/photo-1542610121-31406836968d?w=300&q=80&sig=${i}`} alt="Masjid" className="w-full h-full object-cover" />
+                  </div>
+                  <h4 className="font-bold text-sm text-gray-900 mb-1">Masjid Al-Noor</h4>
+                  <div className="flex items-center gap-1 mb-2">
+                    <div className="flex items-center">
+                      <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                      <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                      <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                      <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                    </div>
+                    <span className="text-[10px] font-bold text-gray-400">4.7 (5367)</span>
+                  </div>
+                  <div className="space-y-1.5">
+                    <span className="text-[10px] font-bold text-green-500 uppercase">Open</span>
+                    <div className="flex items-center gap-1.5 text-gray-400">
+                      <Clock className="w-3 h-3" />
+                      <span className="text-[10px] font-bold">5 min by car</span>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </section>
+
+        {/* Recommended Section */}
+        <section className="px-6 pb-10 flex-grow">
+          <h3 className="text-lg font-bold text-gray-900 mb-4">Recommended</h3>
+          {recommended ? (
+            <div className="bg-white rounded-[32px] p-4 shadow-[0_10px_40px_rgba(0,0,0,0.06)] border border-gray-50 flex items-center gap-4 group cursor-pointer hover:shadow-lg transition-shadow">
+              <div className="w-24 h-24 rounded-2xl overflow-hidden flex-shrink-0">
                 <img 
-                  src={`https://images.unsplash.com/photo-1542610121-31406836968d?w=500&sig=${i}`} 
-                  alt={mosque.name} 
+                  src={recommended.image_url || `https://images.unsplash.com/photo-1590076215667-873d6f00918c?w=300&q=80`} 
+                  alt={recommended.name} 
                   className="w-full h-full object-cover" 
                 />
               </div>
-              <div className="flex-1 py-1">
-                <h4 className="font-bold text-xl md:text-2xl text-gray-900 leading-tight mb-3 group-hover:text-gray-600 transition-colors">
-                  {mosque.name}
-                </h4>
-                <div className="flex items-center gap-2 text-gray-400 font-medium text-sm md:text-base">
-                  <span>{mosque.city || 'Nearby'}</span>
-                  <span className="w-1 h-1 bg-gray-300 rounded-full" />
-                  <span>4.5 Rating</span>
+              <div className="flex-1">
+                <h4 className="font-bold text-base text-gray-900 mb-1">{recommended.name}</h4>
+                <div className="flex items-center gap-1 mb-3">
+                  <div className="flex items-center">
+                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                  </div>
+                  <span className="text-[10px] font-bold text-gray-400 ml-1">4.7</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex flex-col">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-bold text-green-500 uppercase">Open</span>
+                      <span className="text-[10px] text-gray-400">|</span>
+                      <span className="text-[10px] font-bold text-gray-400">Close at 5:00pm</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-gray-400 mt-1">
+                      <Clock className="w-3 h-3" />
+                      <span className="text-[10px] font-bold">5 min by car</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+          ) : (
+            <div className="bg-white rounded-[32px] p-4 shadow-[0_10px_40px_rgba(0,0,0,0.06)] border border-gray-50 flex items-center gap-4">
+              <div className="w-24 h-24 rounded-2xl overflow-hidden bg-gray-100 flex-shrink-0">
+                <img src={`https://images.unsplash.com/photo-1590076215667-873d6f00918c?w=300&q=80`} alt="Masjid" className="w-full h-full object-cover" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-bold text-base text-gray-900 mb-1">Central Islamic Center</h4>
+                <div className="flex items-center gap-1 mb-3">
+                  <div className="flex items-center">
+                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                  </div>
+                  <span className="text-[10px] font-bold text-gray-400 ml-1">4.7</span>
+                </div>
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-bold text-green-500 uppercase">Open</span>
+                    <span className="text-[10px] text-gray-400">|</span>
+                    <span className="text-[10px] font-bold text-gray-400">Close at 5:00pm</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-gray-400 mt-1">
+                    <Clock className="w-3 h-3" />
+                    <span className="text-[10px] font-bold">5 min by car</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </section>
       </main>
     </div>
   );
