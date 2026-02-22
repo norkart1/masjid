@@ -52,7 +52,14 @@ export default function Home() {
       {/* Main Mobile-First Container */}
       <main className="w-full max-w-md bg-white md:rounded-[40px] shadow-2xl overflow-hidden min-h-screen md:min-h-[850px] relative flex flex-col">
         
-        <div className="px-6 py-4 pt-10">
+        {/* Header Section */}
+        <header className="px-6 pt-10 pb-4 flex items-center justify-end">
+          <button className="p-2 hover:bg-gray-50 rounded-full transition-colors">
+            <Menu className="w-6 h-6 text-gray-800" />
+          </button>
+        </header>
+
+        <div className="px-6 py-4">
           <h2 className="text-2xl font-bold text-gray-900 leading-tight max-w-[200px]">
             Find the best masjids near you...
           </h2>
